@@ -6,7 +6,7 @@ def timer(function):
         start_time = time.time()
         function(*args, **kwargs)
         end_time = time.time()
-        print(f"{end_time - start_time:.2f}")
+        print(f"[[It took me: {end_time - start_time:.2f} seconds to find your prime numbers..]]")
     return wrapper
 
 # Basic startup dialoge.....
