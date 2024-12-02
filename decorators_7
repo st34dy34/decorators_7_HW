@@ -1,0 +1,50 @@
+import time
+
+def timer(function):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        function(*args, **kwargs)
+        end_time = time.time()
+        print(f"{end_time - start_time:.2f}")
+    return wrapper
+
+
+def prime_verifier(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n**0.5) + 1):  
+        if n % i == 0:
+            return False
+    return True
+
+@timer
+def prime_finder(x,y):
+    for i in range(x,y):
+        if prime_verifier(i):
+            print(f"{i} is prime number!!!!")
+        
+def dialogue():
+    print("I will find you a prime number!")
+    print("Do you wish to use default settings?")
+    print("Or your own range..")
+    print("[yes/no]")
+    
+while True:
+    print("-" * 60)
+    dialogue()
+    choice = input()
+    match choice:
+        case "yes":
+            prime_finder(0,100)
+        case "no":
+            x = int(input("insert beginning of range: "))
+            y = int(input("insert ending of range: "))
+            prime_finder(x,y)
+        case _:
+            print("invalid value")
+    
+            
+              
+        
+        
+    
