@@ -1,5 +1,6 @@
 import time
 
+# timer decorator for calculating elapsed time during function 
 def timer(function):
     def wrapper(*args, **kwargs):
         start_time = time.time()
@@ -8,7 +9,14 @@ def timer(function):
         print(f"{end_time - start_time:.2f}")
     return wrapper
 
+# Basic startup dialoge.....
+def dialogue():
+    print("I will find you a prime number!")
+    print("Do you wish to use default settings?")
+    print("Or your own range..")
+    print("[yes/no]")
 
+# ----- Prime Finder -----
 def prime_verifier(n):
     if n <= 1:
         return False
@@ -23,11 +31,7 @@ def prime_finder(x,y):
         if prime_verifier(i):
             print(f"{i} is prime number!!!!")
         
-def dialogue():
-    print("I will find you a prime number!")
-    print("Do you wish to use default settings?")
-    print("Or your own range..")
-    print("[yes/no]")
+# ----- /Prime Finder/ -----
     
 while True:
     print("-" * 60)
@@ -42,7 +46,8 @@ while True:
             prime_finder(x,y)
         case _:
             print("invalid value")
-    
+
+
             
               
         
