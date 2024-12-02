@@ -1,0 +1,103 @@
+""" /// FUNCTIONS /// """
+# tohle předělá json format na hezkej 
+def pretty_format(data):
+    return "\n".join(f"{key}: {value}" for key, value in data.items())
+
+
+# tohle formatuje a vybira data podle organizace
+def formatter(func):
+    def wrapper(origin_firm, target_firm):
+        
+        # Call the original function to get the data
+        data = func(origin_firm, target_firm)
+        match target_firm:
+            case "csob":
+                return {
+                    "Jmeno_firmy": data["company_name"],
+                    "Zisk": data["product_sales"] + data["service_income"],
+                    "Vydaje": data["operating_expenses"],
+                }
+            case "eon":
+                return {
+                    "Firm_name": data["company_name"],
+                    "Taxes": data["taxes"],
+                    "Vydaje": data["operating_expenses"],
+                }
+            case _:
+                return data #returnu defaultni format
+            
+    return wrapper
+
+
+# Tady se jakoby posílá ten statement do nějaký target firmy
+@formatter
+def send_statement(origin_firm,target_firm):
+    print()
+    print(f"Sending statement to {target_firm}..")
+    return origin_firm.get_data()
+
+
+""" /// Classes ///"""
+# klasa firmy
+class FinancialStatement:
+    def __init__(
+        self, 
+        company_name,
+        cash=0, 
+        product_sales=0, 
+        service_income=0, 
+        operating_expenses=0, 
+        taxes=0
+    ):
+        self.company_name = company_name
+        self.cash = cash
+        self.product_sales = product_sales
+        self.service_income = service_income
+        self.operating_expenses = operating_expenses
+        self.taxes = taxes
+
+    def get_data(self):
+        """Returns a dictionary representation of the financial data."""
+        return {
+            "company_name": self.company_name,
+            "cash": self.cash,
+            "product_sales": self.product_sales,
+            "service_income": self.service_income,
+            "operating_expenses": self.operating_expenses,
+            "taxes": self.taxes,
+        }
+
+    def __str__(self):
+        """Returns a formatted string representation of the financial statement."""
+        return (
+            f"Company: {self.company_name}\n"
+            f"  Cash: {self.cash}\n"
+            f"  Product Sales: {self.product_sales}\n"
+            f"  Service Income: {self.service_income}\n"
+            f"  Operating Expenses: {self.operating_expenses}\n"
+            f"  Taxes: {self.taxes}\n"
+        )
+
+# vytvoreni objektu firem
+firma_ITstep = FinancialStatement(
+    company_name="IT Step",
+    cash=20000,
+    product_sales=50000,
+    service_income=10000,
+    operating_expenses=30000,
+    taxes=10000
+)
+firma_PSFitness = FinancialStatement(
+    company_name="PS Fitness",
+    cash=15000,
+    product_sales=40000,
+    service_income=8000,
+    operating_expenses=20000,
+    taxes=7000
+)
+
+""" //// MAIN PROGRAM ///// """
+print(pretty_format(send_statement(firma_ITstep,"csob")))
+print(pretty_format(send_statement(firma_PSFitness,"eon")))
+
+
